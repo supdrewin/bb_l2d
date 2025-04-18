@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Black Beacon - Live2D section</title>
+
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+        <style>
+            body,
+            html {
+                margin: 0;
+                padding: 0;
+                width: 100vw;
+                height: 100%;
+            }
+
+            canvas {
+                display: block;
+                touch-action: none;
+            }
+
+            canvas:focus {
+                outline: none;
+            }
+        </style>
+    </head>
+
+    <body>
+        <script>
+            class UserProperty {
+                #value = undefined;
+                #changed = false;
+
+                set value(value) {
+                    this.#value = value;
+                    this.#changed = true;
+                }
+
+                get changed() {
+                    if (this.#changed) {
+                        this.#changed = false;
+                        return this.#value;
+                    }
+                }
+
+                set changed(changed) {
+                    this.#changed = changed;
+                }
+            }
+
+            const scene = new UserProperty();
+
+            function scene_changed() {
+                return scene.changed;
+            }
+
+            function mark_scene_changed() {
+                scene.changed = true;
+            }
+        </script>
+
+        <script type="module">
+            import init from "./bb_l2d.js";
+
+            init().catch((error) => {
+                if (
+                    !error.message.startsWith(
+                        "Using exceptions for control flow, don't mind me. This isn't actually an error!"
+                    )
+                ) {
+                    throw error;
+                }
+            });
+
+            scene.value = window.location.search.slice(1);
+        </script>
+    </body>
+</html>
